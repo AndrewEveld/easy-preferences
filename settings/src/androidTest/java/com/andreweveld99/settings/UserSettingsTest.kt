@@ -9,8 +9,6 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 
 @RunWith(AndroidJUnit4::class)
 class UserSettingsTest {
@@ -22,34 +20,19 @@ class UserSettingsTest {
         context.deleteSharedPreferences(ForTesting::class.java.name)
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
     fun stringTypeShouldWork() {
-        val oldPrefs = context.getSharedPreferences("poppy", Context.MODE_PRIVATE)
-        val testing = UserSettings.userSettingsFrom(context, ForTesting::class.java)
-        val new = measureTime {
-            val default = testing.string
-            testing.string = "poppyCock"
-            val value = testing.string
-            assert(value == "poppyCock")
-            assert(default == "obiwankenobi")
-        }
-         val old = measureTime {
-             val default = oldPrefs.getString("hi", "default")
-             oldPrefs.edit().putString("hi", "newstuff").commit()
-             val value = oldPrefs.getString("hi", "default")
-             assert(value == "newstuff")
-             assert(default == "default")
-         }
-        context.deleteSharedPreferences("poppy")
-        assert(new.inWholeMilliseconds > old.inWholeMilliseconds)
-
-
+        val testing = userSettingsFrom(context, ForTesting::class.java)
+        val default = testing.string
+        testing.string = "poppyCock"
+        val value = testing.string
+        assert(value == "poppyCock")
+        assert(default == "obiwankenobi")
     }
 
     @Test
     fun booleanTypeShouldWork() {
-        val testing = UserSettings.userSettingsFrom(context, ForTesting::class.java)
+        val testing = userSettingsFrom(context, ForTesting::class.java)
         val default = testing.boolean
         testing.boolean = true
         val value = testing.boolean
@@ -60,7 +43,7 @@ class UserSettingsTest {
 
     @Test
     fun intTypeShouldWork() {
-        val testing = UserSettings.userSettingsFrom(context, ForTesting::class.java)
+        val testing = userSettingsFrom(context, ForTesting::class.java)
         val default = testing.int
         testing.int = 5
         val value = testing.int
@@ -71,7 +54,7 @@ class UserSettingsTest {
 
     @Test
     fun longTypeShouldWork() {
-        val testing = UserSettings.userSettingsFrom(context, ForTesting::class.java)
+        val testing = userSettingsFrom(context, ForTesting::class.java)
         val default = testing.long
         testing.long = 5L
         val value = testing.long
@@ -82,7 +65,7 @@ class UserSettingsTest {
 
     @Test
     fun floatTypeShouldWork() {
-        val testing = UserSettings.userSettingsFrom(context, ForTesting::class.java)
+        val testing = userSettingsFrom(context, ForTesting::class.java)
         val default = testing.float
         testing.float = 5.0F
         val value = testing.float
