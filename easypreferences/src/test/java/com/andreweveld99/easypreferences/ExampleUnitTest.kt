@@ -1,4 +1,4 @@
-package com.andreweveld99.settings
+package com.andreweveld99.easypreferences
 
 import org.junit.Test
 

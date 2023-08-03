@@ -1,4 +1,4 @@
-package com.andreweveld99.usersettings
+package com.andreweveld99.testapp
 
 import android.os.Bundle
 import android.util.Log
@@ -19,7 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
-import com.andreweveld99.settings.userSettingsFrom
+import com.andreweveld99.easypreferences.userSettingsFrom
 
 class MainActivity : AppCompatActivity() {
     private lateinit var settings: MainPreferences

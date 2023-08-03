@@ -1,9 +1,7 @@
-package com.andreweveld99.settings
+package com.andreweveld99.easypreferences
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import java.lang.reflect.Proxy
@@ -13,7 +11,7 @@ import java.lang.reflect.Proxy
 inline fun <reified T> userSettingsFrom(context: Context, settingsClass: Class<T>): T {
     val sharedPreferences = context.getSharedPreferences(settingsClass.name, MODE_PRIVATE)
     settingsClass.declaredMethods.forEach { method ->
-        if (isMethodSupported(method)) throw InvalidMethodException()
+        if (!isMethodSupported(method)) throw InvalidMethodException()
     }
     return Proxy.newProxyInstance(settingsClass.classLoader,
         arrayOf(settingsClass), InvocationHandler { _, method, args ->

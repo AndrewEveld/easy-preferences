@@ -1,6 +1,6 @@
-package com.andreweveld99.usersettings
+package com.andreweveld99.testapp
 
-import com.andreweveld99.settings.*
+import com.andreweveld99.easypreferences.*
 
 interface MainPreferences {
     @get:StringSetting("Default String")

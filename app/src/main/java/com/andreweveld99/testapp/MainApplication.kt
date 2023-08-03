@@ -1,4 +1,4 @@
-package com.andreweveld99.usersettings
+package com.andreweveld99.testapp
 
 import android.app.Application
 

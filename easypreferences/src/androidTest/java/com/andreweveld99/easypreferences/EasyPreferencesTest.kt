@@ -1,4 +1,4 @@
-package com.andreweveld99.settings
+package com.andreweveld99.easypreferences
 
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
@@ -11,7 +11,7 @@ import org.junit.Assert.*
 import org.junit.Before
 
 @RunWith(AndroidJUnit4::class)
-class UserSettingsTest {
+class EasyPreferencesTest {
     private lateinit var context: Context
 
     @Before

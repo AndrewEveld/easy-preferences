@@ -1,4 +1,4 @@
-package com.andreweveld99.usersettings
+package com.andreweveld99.testapp
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
