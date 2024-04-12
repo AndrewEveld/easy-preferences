@@ -19,13 +19,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
-import com.andreweveld99.easypreferences.userSettingsFrom
+import com.andreweveld99.easypreferences.getEasyPreferences
 
 class MainActivity : AppCompatActivity() {
     private lateinit var settings: MainPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        settings = userSettingsFrom(applicationContext, MainPreferences::class.java)
+        settings = getEasyPreferences(MainPreferences::class.java)
         setSettingsContent(settings)
     }
 

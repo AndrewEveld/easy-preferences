@@ -2,51 +2,56 @@ package com.andreweveld99.easypreferences
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import java.lang.reflect.InvocationHandler
-import java.lang.reflect.Method
 import java.lang.reflect.Proxy
 
-
+/**
+ * @param easyPrefsInterface The interface defining your preferences structure and default values. You
+ * can only have one Easy Preferences file per interface [T].
+ *
+ * @throws [InvalidMethodException] if [easyPrefsInterface] contains a method not supported by Easy
+ * Preferences.
+ */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T> userSettingsFrom(context: Context, settingsClass: Class<T>): T {
-    val sharedPreferences = context.getSharedPreferences(settingsClass.name, MODE_PRIVATE)
-    settingsClass.declaredMethods.forEach { method ->
-        if (!isMethodSupported(method)) throw InvalidMethodException()
+inline fun <reified T> Context.getEasyPreferences(easyPrefsInterface: Class<T>): T {
+    val sharedPreferences: SharedPreferences =
+        this.getSharedPreferences(easyPrefsInterface.name, MODE_PRIVATE)
+    easyPrefsInterface.declaredMethods.forEach { method ->
+        val doesEPSupportMethod = IsMethodSupportedUseCase().execute(method)
+        if (!doesEPSupportMethod) {
+            throw InvalidMethodException()
+        }
     }
-    return Proxy.newProxyInstance(settingsClass.classLoader,
-        arrayOf(settingsClass), InvocationHandler { _, method, args ->
-            if (method.name == "toString") return@InvocationHandler "User Setting: ${settingsClass.name}"
+    return Proxy.newProxyInstance(easyPrefsInterface.classLoader,
+        arrayOf(easyPrefsInterface), InvocationHandler { _, method, args ->
+            if (method.name == "toString") return@InvocationHandler "User Setting: ${easyPrefsInterface.name}"
             if (method.name.substring(0, 3) == "get") {
                 if (method.isAnnotationPresent(StringSetting::class.java)) {
                     val defaultValue =
                         method.getDeclaredAnnotation(StringSetting::class.java)!!.defaultValue
                     val key = method.name.substring(3)
-                    val toReturn = sharedPreferences.getString(key, defaultValue)
-                    return@InvocationHandler toReturn
+                    return@InvocationHandler sharedPreferences.getString(key, defaultValue)
                 } else if (method.isAnnotationPresent(BooleanSetting::class.java)) {
                     val defaultValue =
                         method.getDeclaredAnnotation(BooleanSetting::class.java)!!.defaultValue
                     val key = method.name.substring(3)
-                    val toReturn = sharedPreferences.getBoolean(key, defaultValue)
-                    return@InvocationHandler toReturn
+                    return@InvocationHandler sharedPreferences.getBoolean(key, defaultValue)
                 } else if (method.isAnnotationPresent(IntSetting::class.java)) {
                     val defaultValue =
                         method.getDeclaredAnnotation(IntSetting::class.java)!!.defaultValue
                     val key = method.name.substring(3)
-                    val toReturn = sharedPreferences.getInt(key, defaultValue)
-                    return@InvocationHandler toReturn
+                    return@InvocationHandler sharedPreferences.getInt(key, defaultValue)
                 } else if (method.isAnnotationPresent(LongSetting::class.java)) {
                     val defaultValue =
                         method.getDeclaredAnnotation(LongSetting::class.java)!!.defaultValue
                     val key = method.name.substring(3)
-                    val toReturn = sharedPreferences.getLong(key, defaultValue)
-                    return@InvocationHandler toReturn
+                    return@InvocationHandler sharedPreferences.getLong(key, defaultValue)
                 } else if (method.isAnnotationPresent(FloatSetting::class.java)) {
                     val defaultValue =
                         method.getDeclaredAnnotation(FloatSetting::class.java)!!.defaultValue
                     val key = method.name.substring(3)
-                    val toReturn = sharedPreferences.getFloat(key, defaultValue)
-                    return@InvocationHandler toReturn
+                    return@InvocationHandler sharedPreferences.getFloat(key, defaultValue)
                 } else {
                     throw PropertyHasUnsupportedType(method.name.substring(3))
                 }
@@ -97,14 +102,6 @@ inline fun <reified T> userSettingsFrom(context: Context, settingsClass: Class<T
     ) as T
 }
 
-fun isMethodSupported(method: Method): Boolean {
-    if (method.isDefault) return true
-    if (method.name.length < 4) return false
-    val methodPrefix = method.name.substring(0, 3)
-    if (methodPrefix != "get" && methodPrefix != "set") return false
-    return true
-}
-
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.PROPERTY_GETTER)
 annotation class StringSetting(val defaultValue: String)
@@ -125,6 +122,6 @@ annotation class FloatSetting(val defaultValue: Float)
 @Target(AnnotationTarget.PROPERTY_GETTER)
 annotation class LongSetting(val defaultValue: Long)
 
-class InvalidMethodException() : Exception("An invalid method was detected.")
+class InvalidMethodException : Exception("An invalid method was detected.")
 class PropertyHasUnsupportedType(propertyName: String) :
     Exception("The type of $propertyName is not valid.")
