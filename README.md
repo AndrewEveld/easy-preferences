@@ -14,19 +14,19 @@ Eg. `@get:StringSetting("this string is this property's default value")`.
 import com.andreweveld99.settings.*
 
 interface MainPreferences {
-    @get:StringSetting("Default String")
+    @get:StringPreference("Default String")
     var string: String
 
-    @get:BooleanSetting(false)
+    @get:BooleanPreference(false)
     var boolean: Boolean
 
-    @get:IntSetting(0)
+    @get:IntPreference(0)
     var int: Int
 
-    @get:LongSetting(0L)
+    @get:LongPreference(0L)
     var long: Long
 
-    @get:FloatSetting(0F)
+    @get:FloatPreference(0F)
     var float: Float
 }
 ```
@@ -35,28 +35,18 @@ Once you have properly defined your interface you can use this function to creat
 your class that accesses
 SharedPreferences: `userSettingsFrom(context: Context, settingsClass: Class<T>): T`.
 
-Using the above `interface` we can do this:
+Using the above `interface` we can do the following to initialize an instance of our `MainPreferences` 
+interface:
 
 ```kotlin
-val settings: MainPreferences = userSettingsFrom(context, MainPreferences::class.java)
+val settings: MainPreferences = context.getEasyPreferences(MainPreferences::class.java)
 ```
 
 Now, getting and setting the fields of the generated `MainPreferences` object will access
-SharedPreferences.
-```kotlin
-settings.string = "New Value"
-```
-is equivalent to
-```kotlin
-sharedPreferences.edit().putString("string", "New Value").apply()
-```
+SharedPreferences behind the scenes.
+
+`settings.string = "New Value"` is equivalent to `sharedPreferences.edit().putString("string", "New Value").apply()`
 
 and
 
-```kotlin
-val savedValue = settings.string
-```
-is equivalent to
-```kotlin
-val savedValue = sharedPreferences.getString("string", "Default String")
-```
+`val savedValue = settings.string` is equivalent to `val savedValue = sharedPreferences.getString("string", "Default String")`
