@@ -75,19 +75,19 @@ class EasyPreferencesTest {
     }
 
     interface ForTesting {
-        @get:StringSetting("obiwankenobi")
+        @get:StringPreference("obiwankenobi")
         var string: String
 
-        @get:BooleanSetting(false)
+        @get:BooleanPreference(false)
         var boolean: Boolean
 
-        @get:IntSetting(0)
+        @get:IntPreference(0)
         var int: Int
 
-        @get:LongSetting(0L)
+        @get:LongPreference(0L)
         var long: Long
 
-        @get:FloatSetting(0.0F)
+        @get:FloatPreference(0.0F)
         var float: Float
     }
 }

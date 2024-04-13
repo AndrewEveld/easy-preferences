@@ -3,18 +3,18 @@ package com.andreweveld99.testapp
 import com.andreweveld99.easypreferences.*
 
 interface MainPreferences {
-    @get:StringSetting("Default String")
+    @get:StringPreference("Default String")
     var string: String
 
-    @get:BooleanSetting(false)
+    @get:BooleanPreference(false)
     var boolean: Boolean
 
-    @get:IntSetting(0)
+    @get:IntPreference(0)
     var int: Int
 
-    @get:LongSetting(0L)
+    @get:LongPreference(0L)
     var long: Long
 
-    @get:FloatSetting(0F)
+    @get:FloatPreference(0F)
     var float: Float
 }
