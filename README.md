@@ -11,7 +11,7 @@ attached to the getter of the property.
 Eg. `@get:StringSetting("this string is this property's default value")`.
 
 ```kotlin
-import com.andreweveld99.settings.*
+import com.andreweveld.settings.*
 
 interface MainPreferences {
     @get:StringPreference("Default String")

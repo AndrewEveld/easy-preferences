@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "Easy Preferences"
 include ':app'
 include ':easypreferences'
